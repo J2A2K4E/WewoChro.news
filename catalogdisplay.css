@@ -1,0 +1,50 @@
+.row{
+  margin: 105px auto 15px auto;
+  max-width: 400px;
+}
+.logo-carousel{
+  position: relative;
+}
+.logo-carousel .logo{
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  z-index: 1;
+  position: absolute;
+  background: #E4E4E4;
+  border-radius: 10px;
+  box-shadow: 0px 3px 3px #E0E0E0;
+  border: solid 1px #eee;
+}
+.logo-carousel .logo:nth-child(1){
+  transform: translate3d(0%, 0%, 1px) scale(1.0);
+  z-index: 3;
+  animation: slideshow linear 4000ms infinite both;
+}
+.logo-carousel .logo:nth-child(2){
+  transform: translate3d(0%, -20%, 1px) scale(0.80);
+  z-index: 2;
+}
+.logo-carousel .logo:nth-child(3){
+  transform: translate3d(0%, -40%, 1px) scale(0.60);
+  z-index: 1;
+}
+.logo-carousel .logo:nth-child(4){
+  transform: translate3d(0%, -60%, 1px) scale(0.40);
+  z-index: 0;
+}
+
+@keyframes slideshow{
+  
+  0%{
+    transform: translate3d(0%, 0%, 1px) scale(1.0);
+  }
+  60%{
+    transform: translate3d(0%, 20%, 1px) scale(0.90);
+  }
+  100%{
+    transform: translate3d(0%, -60%, 1px) scale(0.4);
+  }
+  
+}
+    
