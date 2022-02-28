@@ -1,4 +1,0 @@
-var penstart = <script src="https://www.github.com/J2A2K4E/WewoChro.news/penstart.wc"></script>
-var endpen = <script src="https://www.github.com/J2A2K4E/WewoChro.news/endpen.wc"></script>
-var docwrit = penstart + FileName + endpen
-  print(docwrit)= "#"

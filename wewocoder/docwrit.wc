@@ -1,0 +1,4 @@
+var penstart = <script src="https://www.github.com/J2A2K4E/WewoChro.news/wewocoder/penstart.wc"></script>
+var endpen = <script src="https://www.github.com/J2A2K4E/WewoChro.news/wewocoder/endpen.wc"></script>
+var docwrit = penstart + <input id="fileName" class="name"></input> + endpen
+  print(docwrit)=
