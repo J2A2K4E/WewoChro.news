@@ -1,0 +1,49 @@
+import nltk
+
+class ComplianceChecker:    def __init__(self, rules):        self.rules = rules
+
+    def check_compliance(self, message):        """
+        Check the compliance of a message with the defined rules.
+        :param message: The message to check.
+        :return: A boolean indicating whether the message is compliant or not.
+        """        compliant = True        for rule in self.rules:
+            if rule in message:
+                compliant = False                break        return compliant
+
+class ComplianceRules:    def __init__(self):        self.rules = []
+
+    def add_rule(self, rule):        """
+        Add a compliance rule to the system.
+        :param rule: The rule to add.
+        """        self.rules.append(rule)
+
+    def remove_rule(self, rule):        """
+        Remove a compliance rule from the system.
+        :param rule: The rule to remove.
+        """        self.rules.remove(rule)
+
+class ComplianceNotification:    def __init__(self, message):        self.message = message
+
+    def send_notification(self):        """
+        Send a notification to the appropriate admin about the non-compliant message.
+        """        # Code to send notification to admin goes here        pass
+class ComplianceSystem:    def __init__(self):        self.rules = ComplianceRules()
+        self.checker = ComplianceChecker(self.rules.rules)
+
+    def add_rule(self, rule):        """
+        Add a compliance rule to the system.
+        :param rule: The rule to add.
+        """        self.rules.add_rule(rule)
+        self.checker = ComplianceChecker(self.rules.rules)
+
+    def remove_rule(self, rule):        """
+        Remove a compliance rule from the system.
+        :param rule: The rule to remove.
+        """        self.rules.remove_rule(rule)
+        self.checker = ComplianceChecker(self.rules.rules)
+
+    def check_compliance(self, message):        """
+        Check the compliance of a message with the defined rules.
+        :param message: The message to check.
+        :return: A boolean indicating whether the message is compliant or not.
+        """        return self.checker.check_compliance(message)
