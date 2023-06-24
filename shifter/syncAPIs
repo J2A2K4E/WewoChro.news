@@ -1,0 +1,125 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const { Octokit } = require("@octokit/rest");
+const IFTTT = require("ifttt-webhook");
+const Notion = require("notion-client");
+const Sage = require("sage-client");
+
+// Create a new instance of the Express framework
+const app = express();
+
+// Use the JSON body parser middleware
+app.use(bodyParser.json());
+
+// Define a route to handle IFTTT webhook requests
+app.post('/ifttt-webhook', async (req, res) => {
+  try {
+    // Retrieve the event name and data from the request body
+    const { event, data } = req.body;
+
+    // Call the appropriate function based on the event name
+    switch (event) {
+      case 'github-issue-created':
+        await handleGitHubIssueCreated(data);
+        break;
+      case 'notion-page-created':
+        await handleNotionPageCreated(data);
+        break;
+      case 'sage-query-completed':
+        await handleSageQueryCompleted(data);
+        break;
+      default:
+        throw new Error(`Unsupported event: ${event}`);
+    }
+
+    // Send a response indicating success
+    res.send('Event handled successfully!');
+  } catch (error) {
+    // Send a response indicating failure
+    res.status(500).send(error);
+  }
+});
+
+// Define a function to handle GitHub issue created events
+async function handleGitHubIssueCreated(data) {
+  // Retrieve the repository owner and name from the data
+  const { owner, repo } = data.repository;
+
+  // Create a new Octokit instance with your GitHub access token
+  const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
+
+  // Create a new issue in the repository using the Octokit API
+  await octokit.issues.create({
+    owner,
+    repo,
+    title: data.title,
+    body: data.body,
+  });
+}
+
+// Define a function to handle Notion page created events
+async function handleNotionPageCreated(data) {
+  // Create a new Notion client with your Notion API key
+  const notion = new Notion({ auth: process.env.NOTION_API_KEY });
+
+  // Retrieve the URL of the new Notion page from the data
+  const { url } = data;
+
+  // Create a new GitHub issue with the Notion page URL as the title
+  await createGitHubIssue({
+    title: url,
+    body: "New Notion page created",
+  });
+}
+
+// Define a function to handle Sage query completed events
+async function handleSageQueryCompleted(data) {
+  // Create a new Sage client with your Sage API key
+  const sage = new Sage({ apiKey: process.env.SAGE_API_KEY });
+
+  // Retrieve the results of the Sage query from the data
+  const { results } = data;
+
+  // Create a new Notion page with the Sage query results as the content
+  await createNotionPage({
+    content: results,
+  });
+}
+
+// Define a function to create a new GitHub issue
+async function createGitHubIssue(data) {
+  // Retrieve the repository owner and name from the data
+  const { owner, repo } = data.repository;
+
+  // Create a new Octokit instance with your GitHub access token
+  const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
+
+  // Create a new issue in the repository using the Octokit API
+  await octokit.issues.create({
+    owner,
+    repo,
+    title: data.title,
+    body: data.body,
+  });
+}
+
+// Define a function to create a new Notion page
+async function createNotionPage(data) {
+  // Create a new Notion client with your Notion API key
+  const notion = new Notion({ auth: process.env.NOTION_API_KEY });
+
+  // Create a new page in a Notion database using the Notion API
+  await notion.pages.create({
+    database_id: process.env.NOTION_DATABASE_ID,
+    properties: {
+      content: {
+        rich_text: data.content,
+      },
+    },
+  });
+}
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server listening on port 3000!');
+});
