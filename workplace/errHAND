@@ -1,0 +1,18 @@
+// error-handler.js
+// Function to handle errors and return an appropriate response to the clientconst handleError = (err, res) => {
+  let statusCode = 500; // Default to 500 Internal Server Error  let message = "Internal Server Error";
+
+  // Check if the error is a known error type and set the status code and message accordingly  if (err.name === "ValidationError") { // For validation errors    statusCode = 400;
+    message = err.message;
+  } else if (err.name === "CastError") { // For invalid MongoDB ObjectID errors    statusCode = 400;
+    message = "Invalid ID";
+  } else if (err.name === "UnauthorizedError") { // For unauthorized access errors    statusCode = 401;
+    message = "Unauthorized";
+  }
+
+  // Log the error in the console for debugging purposes  console.error(err);
+
+  // Send the appropriate error response to the client  res.status(statusCode).json({ error: message });
+};
+
+// Export the handleError function for use in other modulesmodule.exports = { handleError };
