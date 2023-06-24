@@ -1,0 +1,56 @@
+const { Octokit } = require('@octokit/rest');
+
+// Create a new Octokit client with an access token
+const octokit = new Octokit({
+  auth: 'YOUR_ACCESS_TOKEN_HERE'
+});
+
+const { data: branch } = await octokit.repos.getBranch({
+  owner: 'OWNER_NAME_HERE',
+  repo: 'REPO_NAME_HERE',
+  branch: 'main'
+});
+
+const latestCommitSha = branch.commit.sha;
+
+const { data: commit } = await octokit.git.getCommit({
+  owner: 'OWNER_NAME_HERE',
+  repo: 'REPO_NAME_HERE',
+  commit_sha: latestCommitSha
+});
+
+const latestTreeSha = commit.tree.sha;
+
+const newTree = await octokit.git.createTree({
+  owner: 'OWNER_NAME_HERE',
+  repo: 'REPO_NAME_HERE',
+  tree: [
+    {
+      path: 'newfile.txt',
+      mode: '100644',
+      type: 'blob',
+      sha: newBlobSha
+    }
+  ],
+  base_tree: latestTreeSha
+});
+
+const newTreeSha = newTree.data.sha;
+
+const newCommit = await octokit.git.createCommit({
+  owner: 'OWNER_NAME_HERE',
+  repo: 'REPO_NAME_HERE',
+  message: 'Add newfile.txt',
+  tree: newTreeSha,
+  parents: [latestCommitSha]
+});
+
+const newCommitSha = newCommit.data.sha;
+
+await octokit.git.updateRef({
+  owner: 'OWNER_NAME_HERE',
+  repo: 'REPO_NAME_HERE',
+  ref: 'heads/main',
+  sha: newCommitSha
+});
+
