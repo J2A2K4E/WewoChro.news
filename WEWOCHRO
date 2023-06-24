@@ -1,0 +1,37 @@
+const { Octokit } = require('@octokit/rest');
+
+// Instantiate a new Octokit client with an access token
+const octokit = new Octokit({
+  auth: 'YOUR_ACCESS_TOKEN_HERE'
+});
+
+// Retrieve the details of a repository
+async function getRepository(owner, repo) {
+  // Retrieve the repository object
+  const { data: repository } = await octokit.repos.get({
+    owner,
+    repo
+  });
+
+  // Retrieve the default branch for the repository
+  const { data: branch } = await octokit.repos.getBranch({
+    owner,
+    repo,
+    branch: repository.default_branch
+  });
+
+  // Retrieve the latest commit on the default branch
+  const { data: commit } = await octokit.git.getCommit({
+    owner,
+    repo,
+    commit_sha: branch.commit.sha
+  });
+
+  // Print out some information about the repository and commit
+  console.log(`Repository: ${owner}/${repo}`);
+  console.log(`Latest commit: ${commit.sha}`);
+  console.log(`Commit message: ${commit.message}`);
+}
+
+// Call the getRepository function with a specific owner and repo
+getRepository('octokit', 'rest.js');
