@@ -1,0 +1,30 @@
+// Import required modulesconst express = require('express');
+const searchDatabase = require('./searchDatabase');
+const checkCompliance = require('./checkCompliance');
+
+// Create express appconst app = express();
+
+// Set up middlewareapp.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Set up routesapp.get('/search', (req, res) => {
+  const query = req.query.query;
+  const results = searchDatabase(query);
+  res.json(results);
+});
+
+app.get('/compliance', (req, res) => {
+  const violations = checkCompliance();
+  res.json(violations);
+});
+
+// Start serverconst server = app.listen(3000, () => {
+  console.log(`Server running on port ${server.address().port}`);
+});
+
+// Implement randomized triggering for compliance checksetInterval(() => {
+  const violations = checkCompliance();
+  if (violations.length > 0) {
+    console.log(`Compliance violation detected: ${violations[0].name}`);
+    // Trigger alert or other action here  }
+}, Math.floor(Math.random() * (86400000 - 3600000) + 3600000)); // Random interval between 1 hour and 24 hours
