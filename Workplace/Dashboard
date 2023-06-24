@@ -1,0 +1,49 @@
+#include <iostream>#include <string>#include <vector>
+using namespace std;
+
+class CompliancePolicy {  public:
+    CompliancePolicy(string name, bool isEnforced) {
+      this->name = name;
+      this->isEnforced = isEnforced;
+    }
+    string getName() {
+      return name;
+    }
+    bool getIsEnforced() {
+      return isEnforced;
+    }
+  private:
+    string name;
+    bool isEnforced;
+};
+
+class ComplianceDashboard {  public:
+    ComplianceDashboard() {
+      CompliancePolicy policy1("Data Privacy", true);
+      CompliancePolicy policy2("Environmental Sustainability", true);
+      CompliancePolicy policy3("Labor Regulations", true);
+      CompliancePolicy policy4("Intellectual Property", true);
+      CompliancePolicy policy5("Health and Safety", true);
+      CompliancePolicy policy6("Tax Regulations", true);
+      policies.push_back(policy1);
+      policies.push_back(policy2);
+      policies.push_back(policy3);
+      policies.push_back(policy4);
+      policies.push_back(policy5);
+      policies.push_back(policy6);
+    }
+    void displayDashboard() {
+      cout << "Compliance Dashboard:" << endl;
+      for (int i = 0; i < policies.size(); i++) {
+        cout << policies[i].getName() << ": " << (policies[i].getIsEnforced() ? "Enforced" : "Not Enforced") << endl;
+      }
+    }
+  private:
+    vector<CompliancePolicy> policies;
+};
+
+int main() {
+  ComplianceDashboard dashboard;
+  dashboard.displayDashboard();
+  return 0;
+}
