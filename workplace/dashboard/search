@@ -1,0 +1,48 @@
+const policies = require('./policies');
+const laws = require('./laws');
+const companyDocuments = require('./company_documents');
+const otherDatabases = require('./other_databases');
+
+function searchDatabase(query) {
+  let results = [];
+
+  // Search policies  for (let i = 0; i < policies.length; i++) {
+    if (policies[i].name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+      results.push({
+        type: 'policy',
+        name: policies[i].name,
+        description: policies[i].description      });
+    }
+  }
+
+  // Search laws  for (let i = 0; i < laws.length; i++) {
+    if (laws[i].name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+      results.push({
+        type: 'law',
+        name: laws[i].name,
+        description: laws[i].description      });
+    }
+  }
+
+  // Search company documents  for (let i = 0; i < companyDocuments.length; i++) {
+    if (companyDocuments[i].name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+      results.push({
+        type: 'company document',
+        name: companyDocuments[i].name,
+        description: companyDocuments[i].description      });
+    }
+  }
+
+  // Search other databases  for (let i = 0; i < otherDatabases.length; i++) {
+    if (otherDatabases[i].name.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+      results.push({
+        type: 'other database',
+        name: otherDatabases[i].name,
+        description: otherDatabases[i].description      });
+    }
+  }
+
+  return results;
+}
+
+module.exports = searchDatabase;
