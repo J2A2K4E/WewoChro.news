@@ -1,0 +1,20 @@
+// sync-systems.js
+// Function to synchronize the website with a random current systemconst syncWithSystem = () => {
+  // Generate a random integer between 1 and 3 to select a system to synchronize with  const systemNumber = Math.floor(Math.random() * 3) + 1;
+
+  // Use a switch statement to select the appropriate system to synchronize with  switch (systemNumber) {
+    case 1:
+      // Code to synchronize with System 1      console.log("Synchronized with System 1");
+      break;
+    case 2:
+      // Code to synchronize with System 2      console.log("Synchronized with System 2");
+      break;
+    case 3:
+      // Code to synchronize with System 3      console.log("Synchronized with System 3");
+      break;
+    default:
+      console.error("Invalid system number");
+  }
+};
+
+// Export the syncWithSystem function for use in other modulesmodule.exports = { syncWithSystem };
