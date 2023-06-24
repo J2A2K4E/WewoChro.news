@@ -1,0 +1,20 @@
+class ComplianceDashboard {
+  public:
+    ComplianceDashboard() {
+      CompliancePolicy policy1("Data Privacy", true);      CompliancePolicy policy2("Environmental Sustainability", true);      CompliancePolicy policy3("Labor Regulations", true);      CompliancePolicy policy4("Intellectual Property", true);      CompliancePolicy policy5("Health and Safety", true);      CompliancePolicy policy6("Tax Regulations", true);      policies.push_back(policy1);      policies.push_back(policy2);      policies.push_back(policy3);      policies.push_back(policy4);      policies.push_back(policy5);      policies.push_back(policy6);      lastUpdated = time(NULL);    }
+    void displayDashboard() {
+      cout << "Compliance Dashboard:" << endl;
+      for (int i = 0; i < policies.size(); i++) {        cout << policies[i].getName() << ": " << (policies[i].getIsEnforced() ? "Enforced" : "Not Enforced") << endl;
+      }
+      cout << "Last updated: " << ctime(&lastUpdated) << endl;
+    }
+    void updatePolicy(string name, bool isEnforced) {
+      for (int i = 0; i < policies.size(); i++) {        if (policies[i].getName() == name) {
+          policies[i] = CompliancePolicy(name, isEnforced);          lastUpdated = time(NULL);          break;
+        }
+      }
+    }
+  private:
+    vector<CompliancePolicy> policies;
+    time_t lastUpdated;
+};
