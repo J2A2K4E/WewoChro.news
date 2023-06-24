@@ -1,0 +1,6 @@
+const { Octokit } = require('@octokit/rest');
+
+// Create a new Octokit client with an access token
+const octokit = new Octokit({
+  auth: 'YOUR_ACCESS_TOKEN_HERE'
+});
