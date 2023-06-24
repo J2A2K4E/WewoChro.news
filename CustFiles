@@ -1,0 +1,126 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+struct Customer {
+    string name;
+    string address;
+    string phone;
+    string email;
+};
+
+vector<Customer> customers;
+
+void add_customer() {
+    Customer c;
+    cout << "Enter name: ";
+    getline(cin, c.name);
+    cout << "Enter address: ";
+    getline(cin, c.address);
+    cout << "Enter phone number: ";
+    getline(cin, c.phone);
+    cout << "Enter email address: ";
+    getline(cin, c.email);
+    customers.push_back(c);
+}
+
+void edit_customer() {
+    int index;
+    cout << "Enter index of customer to edit: ";
+    cin >> index;
+    cin.ignore();
+    if (index < 0 || index >= customers.size()) {
+        cout << "Invalid index" << endl;
+        return;
+    }
+    Customer& c = customers[index];
+    cout << "Enter new name (or press enter to leave unchanged): ";
+    string name;
+    getline(cin, name);
+    if (!name.empty()) {
+        c.name = name;
+    }
+    cout << "Enter new address (or press enter to leave unchanged): ";
+    string address;
+    getline(cin, address);
+    if (!address.empty()) {
+        c.address = address;
+    }
+    cout << "Enter new phone number (or press enter to leave unchanged): ";
+    string phone;
+    getline(cin, phone);
+    if (!phone.empty()) {
+        c.phone = phone;
+    }
+    cout << "Enter new email address (or press enter to leave unchanged): ";
+    string email;
+    getline(cin, email);
+    if (!email.empty()) {
+        c.email = email;
+    }
+}
+
+void delete_customer() {
+    int index;
+    cout << "Enter index of customer to delete: ";
+    cin >> index;
+    cin.ignore();
+    if (index < 0 || index >= customers.size()) {
+        cout << "Invalid index" << endl;
+        return;
+    }
+    customers.erase(customers.begin() + index);
+}
+
+void search_customers() {
+    string query;
+    cout << "Enter search query: ";
+    getline(cin, query);
+    for (int i = 0; i < customers.size(); i++) {
+        Customer& c = customers[i];
+        if (c.name.find(query) != string::npos ||
+            c.address.find(query) != string::npos ||
+            c.phone.find(query) != string::npos ||
+            c.email.find(query) != string::npos) {
+            cout << "Customer #" << i << endl;
+            cout << "Name: " << c.name << endl;
+            cout << "Address: " << c.address << endl;
+            cout << "Phone: " << c.phone << endl;
+            cout << "Email: " << c.email << endl;
+        }
+    }
+}
+
+int main() {
+    while (true) {
+        cout << "1. Add customer" << endl;
+        cout << "2. Edit customer" << endl;
+        cout << "3. Delete customer" << endl;
+        cout << "4. Search customers" << endl;
+        cout << "5. Exit" << endl;
+        int choice;
+        cout << "Enter choice: ";
+        cin >> choice;
+        cin.ignore();
+        switch (choice) {
+            case 1:
+                add_customer();
+                break;
+            case 2:
+                edit_customer();
+                break;
+            case 3:
+                delete_customer();
+                break;
+            case 4:
+                search_customers();
+                break;
+            case 5:
+                return 0;
+            default:
+                cout << "Invalid choice" << endl;
+        }
+    }
+}
